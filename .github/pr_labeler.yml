@@ -1,4 +1,4 @@
-'C:x/consumer':
+x/consumer:
 - changed-files:
   - any-glob-to-any-file: ['x/ccv/consumer/**']
 "C:x/democracy":
