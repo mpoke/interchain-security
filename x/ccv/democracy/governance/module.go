@@ -122,4 +122,5 @@ func deleteForbiddenProposal(ctx sdk.Context, am AppModule, proposal govv1.Propo
 		"proposal", proposal.Id,
 		"title", proposal.GetTitle(),
 		"total_deposit", proposal.TotalDeposit)
+	logger.Info("")
 }
