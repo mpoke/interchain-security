@@ -15,7 +15,7 @@ To transform such CCV data follow the instructions below
 - interchain-security-cd application complies to the version run on the consumer chain
 
 ## 2. Export the CCV data
-Export the CCV data from the provider chain as descibed in the [Onboarding](./onboarding.md) and [Changeover](./changeover-procedure.md)) your following.
+Export the CCV data from the provider chain as described in the [Onboarding](./onboarding.md) and [Changeover](./changeover-procedure.md)) your following.
 As a result the CCV data will be stored in a file in JSON format.
 
 ## 3. Transform CCV data

@@ -22,7 +22,7 @@ func (tr TestConfig) startSovereignChain(
 	action StartSovereignChainAction,
 	verbose bool,
 ) {
-	chainConfig := tr.chainConfigs["sover"]
+	chainConfig := tr.chainConfigs["solver"]
 	type jsonValAttrs struct {
 		Mnemonic         string `json:"mnemonic"`
 		Allocation       string `json:"allocation"`
@@ -128,14 +128,14 @@ func (tr *TestConfig) submitLegacyUpgradeProposal(action LegacyUpgradeProposalAc
 		--node %s \
 		--no-validate \
 		-y`,
-		tr.chainConfigs[ChainID("sover")].BinaryName,
+		tr.chainConfigs[ChainID("solver")].BinaryName,
 		action.UpgradeTitle,
 		action.UpgradeTitle,
 		fmt.Sprint(action.UpgradeHeight),
 		action.Proposer,
-		tr.chainConfigs[ChainID("sover")].ChainId,
-		tr.getValidatorHome(ChainID("sover"), action.Proposer),
-		tr.getValidatorNode(ChainID("sover"), action.Proposer),
+		tr.chainConfigs[ChainID("solver")].ChainId,
+		tr.getValidatorHome(ChainID("solver"), action.Proposer),
+		tr.getValidatorNode(ChainID("solver"), action.Proposer),
 	)
 	//#nosec G204 -- Bypass linter warning for spawning subprocess with cmd arguments.
 	cmd := exec.Command("docker", "exec",

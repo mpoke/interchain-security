@@ -96,9 +96,9 @@ var changeoverSteps = concatSteps(
 	// the chain will halt once upgrade height is reached
 	// after upgrade height is reached, the chain will become a consumer
 	stepsUpgradeChain(),
-	stepsChangeoverToConsumer("sover"),
+	stepsChangeoverToConsumer("solver"),
 
-	stepsPostChangeoverDelegate("sover"),
+	stepsPostChangeoverDelegate("solver"),
 )
 
 var consumerMisbehaviourSteps = concatSteps(

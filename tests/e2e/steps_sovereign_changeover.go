@@ -11,7 +11,7 @@ func stepsSovereignTransferChan() []Step {
 	return []Step{
 		{
 			Action: CreateIbcClientsAction{
-				ChainA: ChainID("sover"),
+				ChainA: ChainID("solver"),
 				ChainB: ChainID("provi"),
 			},
 			State: State{},
@@ -19,9 +19,9 @@ func stepsSovereignTransferChan() []Step {
 		{
 			// this will create channel-0 connection end on both chain
 			Action: AddIbcChannelAction{
-				ChainA:      ChainID("sover"),
+				ChainA:      ChainID("solver"),
 				ChainB:      ChainID("provi"),
-				ConnectionA: 0,
+				connection: 0,
 				PortA:       "transfer",
 				PortB:       "transfer",
 				Order:       "unordered",
@@ -125,7 +125,7 @@ func stepsChangeoverToConsumer(consumerName string) []Step {
 			Action: AddIbcConnectionAction{
 				ChainA:  ChainID(consumerName),
 				ChainB:  ChainID("provi"),
-				ClientA: 1,
+				client: 1,
 				ClientB: 1,
 			},
 			State: State{},
@@ -134,7 +134,7 @@ func stepsChangeoverToConsumer(consumerName string) []Step {
 			Action: AddIbcChannelAction{
 				ChainA:      ChainID(consumerName),
 				ChainB:      ChainID("provi"),
-				ConnectionA: 1,
+				connection: 1,
 				PortA:       "consumer",
 				PortB:       "provider",
 				Order:       "ordered",
@@ -155,13 +155,13 @@ func stepRunSovereignChain() []Step {
 	return []Step{
 		{
 			Action: StartSovereignChainAction{
-				Chain: ChainID("sover"),
+				Chain: ChainID("solver"),
 				Validators: []StartChainValidator{
 					{Id: ValidatorID("alice"), Stake: 500000000, Allocation: 10000000000},
 				},
 			},
 			State: State{
-				ChainID("sover"): ChainState{
+				ChainID("solver"): ChainState{
 					ValBalances: &map[ValidatorID]uint{
 						ValidatorID("alice"): 9500000000,
 					},
@@ -170,17 +170,17 @@ func stepRunSovereignChain() []Step {
 		},
 		{
 			Action: DelegateTokensAction{
-				Chain:  ChainID("sover"),
+				Chain:  ChainID("solver"),
 				From:   ValidatorID("alice"),
 				To:     ValidatorID("alice"),
 				Amount: 11000000,
 			},
 			State: State{
-				ChainID("sover"): ChainState{
+				ChainID("solver"): ChainState{
 					ValPowers: &map[ValidatorID]uint{
 						ValidatorID("alice"): 511,
-						ValidatorID("bob"):   0, // does not exist on pre-ccv sover
-						ValidatorID("carol"): 0, // does not exist on pre-ccv sover
+						ValidatorID("bob"):   0, // does not exist on pre-ccv solver
+						ValidatorID("carol"): 0, // does not exist on pre-ccv solver
 					},
 				},
 			},
@@ -193,13 +193,13 @@ func stepsUpgradeChain() []Step {
 	return []Step{
 		{
 			Action: LegacyUpgradeProposalAction{
-				ChainID:       ChainID("sover"),
+				ChainID:       ChainID("solver"),
 				UpgradeTitle:  "sovereign-changeover",
 				Proposer:      ValidatorID("alice"),
 				UpgradeHeight: 110,
 			},
 			State: State{
-				ChainID("sover"): ChainState{
+				ChainID("solver"): ChainState{
 					Proposals: &map[uint]Proposal{
 						1: UpgradeProposal{
 							Title:         "sovereign-changeover",
@@ -214,13 +214,13 @@ func stepsUpgradeChain() []Step {
 		},
 		{
 			Action: VoteGovProposalAction{
-				Chain:      ChainID("sover"),
+				Chain:      ChainID("solver"),
 				From:       []ValidatorID{ValidatorID("alice")},
 				Vote:       []string{"yes"},
 				PropNumber: 1,
 			},
 			State: State{
-				ChainID("sover"): ChainState{
+				ChainID("solver"): ChainState{
 					Proposals: &map[uint]Proposal{
 						1: UpgradeProposal{
 							Deposit:       10000000,
@@ -235,7 +235,7 @@ func stepsUpgradeChain() []Step {
 		},
 		{
 			Action: WaitUntilBlockAction{
-				Chain: ChainID("sover"),
+				Chain: ChainID("solver"),
 				Block: 110,
 			},
 			State: State{},

@@ -179,7 +179,7 @@ func stepsStartConsumerChain(consumerName string, proposalIndex, chainIndex uint
 			Action: AddIbcConnectionAction{
 				ChainA:  ChainID(consumerName),
 				ChainB:  ChainID("provi"),
-				ClientA: 0,
+				client: 0,
 				ClientB: chainIndex,
 			},
 			State: State{},
@@ -188,7 +188,7 @@ func stepsStartConsumerChain(consumerName string, proposalIndex, chainIndex uint
 			Action: AddIbcChannelAction{
 				ChainA:      ChainID(consumerName),
 				ChainB:      ChainID("provi"),
-				ConnectionA: 0,
+				connection: 0,
 				PortA:       "consumer", // TODO: check port mapping
 				PortB:       "provider",
 				Order:       "ordered",
@@ -203,7 +203,7 @@ func stepsStartConsumerChain(consumerName string, proposalIndex, chainIndex uint
 			Action: TransferChannelCompleteAction{
 				ChainA:      ChainID(consumerName),
 				ChainB:      ChainID("provi"),
-				ConnectionA: 0,
+				connection: 0,
 				PortA:       "transfer",
 				PortB:       "transfer",
 				Order:       "unordered",

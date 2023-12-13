@@ -137,7 +137,7 @@ func stepsStartChainsWithSoftOptOut(consumerName string) []Step {
 			Action: AddIbcConnectionAction{
 				ChainA:  ChainID(consumerName),
 				ChainB:  ChainID("provi"),
-				ClientA: 0,
+				client: 0,
 				ClientB: 0,
 			},
 			State: State{},
@@ -146,7 +146,7 @@ func stepsStartChainsWithSoftOptOut(consumerName string) []Step {
 			Action: AddIbcChannelAction{
 				ChainA:      ChainID(consumerName),
 				ChainB:      ChainID("provi"),
-				ConnectionA: 0,
+				connection: 0,
 				PortA:       "consumer", // TODO: check port mapping
 				PortB:       "provider",
 				Order:       "ordered",

@@ -40,8 +40,8 @@ pkill -f "^"interchain-security-sd &> /dev/null || true
 
 mkdir -p /root/.sovereign/config
 
-# apply genesis changes to existing genesis -> this creates the changeover genesis file wih intial validator set
-jq "$GENESIS_TRANSFORM" /sover/validatoralice/config/genesis.json > /root/.sovereign/config/genesis.json
+# apply genesis changes to existing genesis -> this creates the changeover genesis file with initial validator set
+jq "$GENESIS_TRANSFORM" /solver/validatoralice/config/genesis.json > /root/.sovereign/config/genesis.json
 
 
 # Get number of nodes from length of validators array
@@ -109,8 +109,8 @@ do
         --recover > /dev/null
 
         # Copy in the genesis.json
-        cp /sover/validatoralice/config/genesis.json /$CHAIN_ID/validator$VAL_ID/config/genesis.json
-        cp -r /sover/validatoralice/data /$CHAIN_ID/validator$VAL_ID/
+        cp /solver/validatoralice/config/genesis.json /$CHAIN_ID/validator$VAL_ID/config/genesis.json
+        cp -r /solver/validatoralice/data /$CHAIN_ID/validator$VAL_ID/
 
         # Copy in validator state file
         # echo '{"height": "0","round": 0,"step": 0}' > /$CHAIN_ID/validator$VAL_ID/data/priv_validator_state.json

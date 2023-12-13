@@ -376,8 +376,8 @@ func ChangeoverTestConfig() TestConfig {
 					".app_state.provider.params.slash_meter_replenish_fraction = \"1.0\" | " + // This disables slash packet throttling
 					".app_state.provider.params.slash_meter_replenish_period = \"3s\"",
 			},
-			ChainID("sover"): {
-				ChainId:        ChainID("sover"),
+			ChainID("solver"): {
+				ChainId:        ChainID("solver"),
 				BinaryName:     "interchain-security-sd",
 				UpgradeBinary:  "interchain-security-cdd",
 				IpPrefix:       "7.7.8",

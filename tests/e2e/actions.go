@@ -565,7 +565,7 @@ func (tr TestConfig) startChangeover(
 	action ChangeoverChainAction,
 	verbose bool,
 ) {
-	chainConfig := tr.chainConfigs[ChainID("sover")]
+	chainConfig := tr.chainConfigs[ChainID("solver")]
 	type jsonValAttrs struct {
 		Mnemonic         string `json:"mnemonic"`
 		Allocation       string `json:"allocation"`
@@ -614,7 +614,7 @@ func (tr TestConfig) startChangeover(
 	//#nosec G204 -- Bypass linter warning for spawning subprocess with cmd arguments.
 	cmd := exec.Command("docker", "exec", tr.containerConfig.InstanceName, "/bin/bash",
 		"/testnet-scripts/start-changeover.sh", chainConfig.UpgradeBinary, string(vals),
-		"sover", chainConfig.IpPrefix, genesisChanges,
+		"solver", chainConfig.IpPrefix, genesisChanges,
 		tr.tendermintConfigOverride,
 	)
 
@@ -830,7 +830,7 @@ const gorelayerPathConfigTemplate = `{
 type AddIbcConnectionAction struct {
 	ChainA  ChainID
 	ChainB  ChainID
-	ClientA uint
+	client uint
 	ClientB uint
 }
 
@@ -851,7 +851,7 @@ func (tr TestConfig) addIbcConnectionGorelayer(
 ) {
 	pathName := tr.GetPathNameForGorelayer(action.ChainA, action.ChainB)
 
-	pathConfig := fmt.Sprintf(gorelayerPathConfigTemplate, action.ChainA, action.ClientA, action.ChainB, action.ClientB)
+	pathConfig := fmt.Sprintf(gorelayerPathConfigTemplate, action.ChainA, action.client, action.ChainB, action.ClientB)
 
 	pathConfigFileName := fmt.Sprintf("/root/%s_config.json", pathName)
 
@@ -948,7 +948,7 @@ func (tr TestConfig) addIbcConnectionHermes(
 	cmd := exec.Command("docker", "exec", tr.containerConfig.InstanceName, "hermes",
 		"create", "connection",
 		"--a-chain", string(tr.chainConfigs[action.ChainA].ChainId),
-		"--a-client", "07-tendermint-"+fmt.Sprint(action.ClientA),
+		"--a-client", "07-tendermint-"+fmt.Sprint(action.client),
 		"--b-client", "07-tendermint-"+fmt.Sprint(action.ClientB),
 	)
 
@@ -981,7 +981,7 @@ func (tr TestConfig) addIbcConnectionHermes(
 type AddIbcChannelAction struct {
 	ChainA      ChainID
 	ChainB      ChainID
-	ConnectionA uint
+	connection uint
 	PortA       string
 	PortB       string
 	Order       string
@@ -1083,7 +1083,7 @@ func (tr TestConfig) addIbcChannelHermes(
 	cmd := exec.Command("docker", "exec", tr.containerConfig.InstanceName, "hermes",
 		"create", "channel",
 		"--a-chain", string(tr.chainConfigs[action.ChainA].ChainId),
-		"--a-connection", "connection-"+fmt.Sprint(action.ConnectionA),
+		"--a-connection", "connection-"+fmt.Sprint(action.connection),
 		"--a-port", action.PortA,
 		"--b-port", action.PortB,
 		"--channel-version", chanVersion,
@@ -1123,7 +1123,7 @@ func (tr TestConfig) addIbcChannelHermes(
 type TransferChannelCompleteAction struct {
 	ChainA      ChainID
 	ChainB      ChainID
-	ConnectionA uint
+	connection uint
 	PortA       string
 	PortB       string
 	Order       string
@@ -1144,7 +1144,7 @@ func (tr TestConfig) transferChannelComplete(
 		"tx", "chan-open-try",
 		"--dst-chain", string(tr.chainConfigs[action.ChainB].ChainId),
 		"--src-chain", string(tr.chainConfigs[action.ChainA].ChainId),
-		"--dst-connection", "connection-"+fmt.Sprint(action.ConnectionA),
+		"--dst-connection", "connection-"+fmt.Sprint(action.connection),
 		"--dst-port", action.PortB,
 		"--src-port", action.PortA,
 		"--src-channel", "channel-"+fmt.Sprint(action.ChannelA),
@@ -1156,7 +1156,7 @@ func (tr TestConfig) transferChannelComplete(
 		"tx", "chan-open-ack",
 		"--dst-chain", string(tr.chainConfigs[action.ChainA].ChainId),
 		"--src-chain", string(tr.chainConfigs[action.ChainB].ChainId),
-		"--dst-connection", "connection-"+fmt.Sprint(action.ConnectionA),
+		"--dst-connection", "connection-"+fmt.Sprint(action.connection),
 		"--dst-port", action.PortA,
 		"--src-port", action.PortB,
 		"--dst-channel", "channel-"+fmt.Sprint(action.ChannelA),
@@ -1170,7 +1170,7 @@ func (tr TestConfig) transferChannelComplete(
 		"tx", "chan-open-confirm",
 		"--dst-chain", string(tr.chainConfigs[action.ChainB].ChainId),
 		"--src-chain", string(tr.chainConfigs[action.ChainA].ChainId),
-		"--dst-connection", "connection-"+fmt.Sprint(action.ConnectionA),
+		"--dst-connection", "connection-"+fmt.Sprint(action.connection),
 		"--dst-port", action.PortB,
 		"--src-port", action.PortA,
 		"--dst-channel", "channel-"+fmt.Sprint(action.ChannelB),
@@ -1919,7 +1919,7 @@ func (tr TestConfig) assignConsumerPubKey(action AssignConsumerPubKeyAction, ver
 		log.Fatalf("unexpected error during key assignment - output: %s, err: %s", string(bz), err)
 	}
 
-	if action.ExpectError && !tr.useCometmock { // error report ony works with --gas auto, which does not work with CometMock, so ignore
+	if action.ExpectError && !tr.useCometmock { // error report only works with --gas auto, which does not work with CometMock, so ignore
 		if err == nil || !strings.Contains(string(bz), action.ExpectedError) {
 			log.Fatalf("expected error not raised: expected: '%s', got '%s'", action.ExpectedError, (bz))
 		}

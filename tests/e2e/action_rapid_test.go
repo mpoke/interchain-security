@@ -336,7 +336,7 @@ func GetAddIbcConnectionActionGen() *rapid.Generator[AddIbcConnectionAction] {
 		return AddIbcConnectionAction{
 			ChainA:  GetChainIDGen().Draw(t, "ChainA"),
 			ChainB:  GetChainIDGen().Draw(t, "ChainB"),
-			ClientA: rapid.Uint().Draw(t, "ClientA"),
+			client: rapid.Uint().Draw(t, "client"),
 			ClientB: rapid.Uint().Draw(t, "ClientB"),
 		}
 	})
@@ -347,7 +347,7 @@ func GetAddIbcChannelActionGen() *rapid.Generator[AddIbcChannelAction] {
 		return AddIbcChannelAction{
 			ChainA:      GetChainIDGen().Draw(t, "ChainA"),
 			ChainB:      GetChainIDGen().Draw(t, "ChainB"),
-			ConnectionA: rapid.Uint().Draw(t, "ConnectionA"),
+			connection: rapid.Uint().Draw(t, "connection"),
 			PortA:       rapid.String().Draw(t, "PortA"),
 			PortB:       rapid.String().Draw(t, "PortB"),
 			Order:       rapid.String().Draw(t, "Order"),
@@ -364,7 +364,7 @@ func GetTransferChannelCompleteActionGen() *rapid.Generator[TransferChannelCompl
 		return TransferChannelCompleteAction{
 			ChainA:      GetChainIDGen().Draw(t, "ChainA"),
 			ChainB:      GetChainIDGen().Draw(t, "ChainB"),
-			ConnectionA: rapid.Uint().Draw(t, "ConnectionA"),
+			connection: rapid.Uint().Draw(t, "connection"),
 			PortA:       rapid.String().Draw(t, "PortA"),
 			PortB:       rapid.String().Draw(t, "PortB"),
 			Order:       rapid.String().Draw(t, "Order"),

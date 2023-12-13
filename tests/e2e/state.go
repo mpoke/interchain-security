@@ -744,9 +744,9 @@ func (tr TestConfig) getQueryNodeRPCAddress(chain ChainID) string {
 
 // getQueryNodeIP returns query node IP for chain,
 // ipSuffix is hardcoded to be 253 on all query nodes
-// except for "sover" chain where there's only one node
+// except for "solver" chain where there's only one node
 func (tr TestConfig) getQueryNodeIP(chain ChainID) string {
-	if chain == ChainID("sover") {
+	if chain == ChainID("solver") {
 		// return address of first and only validator
 		return fmt.Sprintf("%s.%s",
 			tr.chainConfigs[chain].IpPrefix,
